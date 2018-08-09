@@ -44,6 +44,9 @@ if ( ! class_exists( 'WPS\Plugins\GravityForms\MergeTags\AdvancedMergeTags' ) ) 
 		 *
 		 */
 
+		private $_args = null;
+		
+		
 		function __construct() {
 
 			add_action( 'gform_pre_render', array( $this, 'support_default_value_and_html_content_merge_tags' ) );
