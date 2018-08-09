@@ -107,7 +107,7 @@ if ( ! class_exists( 'WPS\Plugins\GravityForms\MergeTags\AdvancedMergeTags' ) ) 
 			}
 			foreach ( $filter_names as $filter_name ) {
 				// do standard GF prepop replace first...
-				$filtered_name = GFCommon::replace_variables_prepopulate( $filter_name['name'] );
+				$filtered_name = \GFCommon::replace_variables_prepopulate( $filter_name['name'] );
 				// if default prepop doesn't find anything, do our advanced replace
 				if ( $filter_name['name'] == $filtered_name ) {
 					$filtered_name = $this->replace_merge_tags( $filter_name['name'], $form, null );
