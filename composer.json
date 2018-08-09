@@ -1,0 +1,35 @@
+{
+  "name": "wpsmith/gravityformsmergetags",
+  "description": "WordPress Gravity Forms Merge Tags.",
+  "keywords": [
+    "wordpress",
+    "debug",
+    "gravity-forms",
+    "gravityforms",
+    "merge-tags",
+    "mergetags"
+  ],
+  "homepage": "https://github.com/wpsmith/GravityFormsMergeTags",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Travis Smith",
+      "email": "t@wpsmith.net",
+      "homepage": "http://wpsmith.net/",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/wpsmith/GravityFormsMergeTags/issues"
+  },
+  "require": {
+    "php": ">=5.2.4",
+    "wpsmith/plugin": "dev-master",
+    "wpsmith/singleton": "^0.0.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "WPS\\Plugins\\GravityForms\\MergeTags\\": "src/"
+    }
+  }
+}
