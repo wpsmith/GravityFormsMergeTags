@@ -45,8 +45,7 @@ if ( ! class_exists( 'WPS\Plugins\GravityForms\MergeTags\AdvancedMergeTags' ) ) 
 		 */
 
 		private $_args = null;
-		
-		
+
 		function __construct() {
 
 			add_action( 'gform_pre_render', array( $this, 'support_default_value_and_html_content_merge_tags' ) );
@@ -118,7 +117,9 @@ if ( ! class_exists( 'WPS\Plugins\GravityForms\MergeTags\AdvancedMergeTags' ) ) 
 				if ( $filter_name['name'] == $filtered_name ) {
 					continue;
 				}
-				add_filter( "gform_field_value_{$filter_name['name']}", create_function( "", "return '$filtered_name';" ) );
+				add_filter( "gform_field_value_{$filter_name['name']}", function () use ( $filtered_name ) {
+					return $filtered_name;
+				} );
 			}
 
 			return $form;
@@ -139,6 +140,12 @@ if ( ! class_exists( 'WPS\Plugins\GravityForms\MergeTags\AdvancedMergeTags' ) ) 
 					$args  = array_map( array( $this, 'check_for_value_modifiers' ), $args );
 					$value = '';
 					switch ( $type ) {
+						case 'user':
+							$value = $this->get_user_merge_tag_value( $args );
+							break;
+						case 'user_meta':
+							$value = $this->get_user_meta_merge_tag_value( $args );
+							break;
 						case 'post':
 							$value = $this->get_post_merge_tag_value( $args );
 							break;
@@ -202,6 +209,35 @@ if ( ! class_exists( 'WPS\Plugins\GravityForms\MergeTags\AdvancedMergeTags' ) ) 
 			return $text;
 		}
 
+		public function get_user_merge_tag_value( $args ) {
+			extract( wp_parse_args( $args, array(
+				'id'   => false,
+				'prop' => false
+			) ) );
+			if ( ! $id || ! $prop ) {
+				return '';
+			}
+			$user = get_user_by( 'id', $id );
+			if ( ! $user ) {
+				return '';
+			}
+
+			return isset( $user->$prop ) ? $user->$prop : '';
+		}
+
+		public function get_user_meta_merge_tag_value( $args ) {
+			extract( wp_parse_args( $args, array(
+				'id'       => false,
+				'meta_key' => false
+			) ) );
+			if ( ! $id || ! $meta_key ) {
+				return '';
+			}
+			$value = get_user_meta( $id, $meta_key, true );
+
+			return $value;
+		}
+
 		public function get_post_merge_tag_value( $args ) {
 			extract( wp_parse_args( $args, array(
 				'id'   => false,
@@ -241,10 +277,10 @@ if ( ! class_exists( 'WPS\Plugins\GravityForms\MergeTags\AdvancedMergeTags' ) ) 
 				if ( ! $id ) {
 					$id = rgget( 'eid' );
 				}
-				if ( is_callable( 'gw_post_content_merge_tags' ) ) {
-					$id = gw_post_content_merge_tags()->maybe_decrypt_entry_id( $id );
+				if ( class_exists( '\WPS\Plugins\GravityForms\MergeTags\PostContentMergeTags' ) ) {
+					$id = PostContentMergeTags::get_instance()->maybe_decrypt_entry_id( $id );
 				}
-				$entry = GFAPI::get_entry( $id );
+				$entry = \GFAPI::get_entry( $id );
 			}
 			if ( ! $prop ) {
 				$prop = key( $args );
@@ -276,8 +312,8 @@ if ( ! class_exists( 'WPS\Plugins\GravityForms\MergeTags\AdvancedMergeTags' ) ) 
 			if ( ! $id || ! $meta_key ) {
 				return '';
 			}
-			if ( is_callable( 'gw_post_content_merge_tags' ) ) {
-				$id = gw_post_content_merge_tags()->maybe_decrypt_entry_id( $id );
+			if ( class_exists( '\WPS\Plugins\GravityForms\MergeTags\PostContentMergeTags' ) ) {
+				$id = PostContentMergeTags::get_instance()->maybe_decrypt_entry_id( $id );
 			}
 			$value = gform_get_meta( $id, $meta_key );
 
