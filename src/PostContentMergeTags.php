@@ -14,7 +14,7 @@
  *
  * @package    WPS\Plugins\GravityForms\CPT
  * @author     Travis Smith <t@wpsmith.net>
- * @copyright  2015-2018 Travis Smith, 2014-2018 Gravity Wiz
+ * @copyright  2015-2019 Travis Smith, 2014-2019 Gravity Wiz
  * @license    http://opensource.org/licenses/gpl-2.0.php GNU Public License v2
  * @link       https://gist.github.com/spivurno/6893785
  * @version    1.2
@@ -23,14 +23,14 @@
  * @since      0.1.0
  */
 
-namespace WPS\Plugins\GravityForms\MergeTags;
+namespace WPS\WP\Plugins\GravityForms\MergeTags;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WPS\Plugins\GravityForms\MergeTags\PostContentMergeTags' ) ) {
+if ( ! class_exists( __NAMESPACE__ . '\PostContentMergeTags' ) ) {
 	class PostContentMergeTags extends \WPS\Core\Singleton {
 
 		public static $_entry = null;

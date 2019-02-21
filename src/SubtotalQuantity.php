@@ -23,10 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( __NAMESPACE__ . '\Subtotal' ) ) {
-	class Subtotal extends \WPS\Core\Singleton {
+if ( ! class_exists( __NAMESPACE__ . '\SubtotalQuantity' ) ) {
+	class SubtotalQuantity extends \WPS\Core\Singleton {
 
-		public static $merge_tag = '{subtotal}';
+		public static $merge_tag = '{subtotal_quantity}';
 
 		protected function __construct() {
 
